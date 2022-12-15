@@ -10,7 +10,8 @@ let players =
            "city": "jalandhar",
 
            "booking":[
-            
+                  
+
            ],
            
            "sports": [
@@ -22,7 +23,10 @@ let players =
            "dob": "1/09/1995",
            "gender": "male",
            "city": "delhi",
+           "booking":[
+                  
            
+                       ],
            "sports": [
                "soccer"
            ],
@@ -32,12 +36,66 @@ let players =
            "dob": "1/1/1990",
            "gender": "male",
            "city": "mumbai",
-           
+           "booking":[
+                  
+            
+                       ],
            "sports": [
                "soccer"
            ],
        },
    ]
+
+
+   let persons= [
+    {
+    name: "PK",
+    age: 10,
+    votingStatus: false
+ },
+ {
+    name: "SK",
+    age: 20,
+    votingStatus: false
+ },
+ {
+    name: "AA",
+    age: 70,
+    votingStatus: false
+ },
+ {
+    name: "SC",
+    age: 5,
+    votingStatus: false
+ },
+ {
+    name: "HO",
+    age: 40,
+    votingStatus: false
+ }
+ ]
+
+ 
+ ///////// query //////////////
+
+ router.post("/votingAge", (req, res)=>{
+  console.log(req.query);
+    let age = req.query.age;
+    console.log(age);
+    for(let i = 0;i<persons.length;i++){
+      if(persons[i].age>=age){
+        persons[i].votingStatus=true
+      }
+    }
+    console.log(persons);
+    let data = persons.filter((ele)=>ele.votingStatus===true)
+    console.log(data);
+    res.send(data)
+ })
+
+
+
+
 
 ///////Assignment/session/post-api/////////////////////////////////////
 
@@ -85,22 +143,28 @@ router.post("/players/:playerName/bookings/:bookingId",(req,res)=>{
   
  let body = req.body
  let {booking} = players
- console.log(booking);
+//  console.log(booking);
   let {playerName,bookingId} = req.params;
   let hasBookingId = false
   let profileExist = false
+  let store = 0;
   
  for(let i =0;i<players.length;i++){
     
-  
+
     
     if(players[i].name===playerName){
-          if(players[i].booking.length===0){
-            players[i].booking.push(body)
-          } 
-          if(players[i].booking.bookingNumber===bookingId){
-            hasBookingId = true
-          }
+         if(players[i].booking.length === 0){
+          players[i].booking.push(body)
+         }
+         if(players[i].booking[i].bookingNumber === bookingId){
+            hasBookingId = true;
+            break;
+         }
+         
+         
+          
+         
     }
  
        
@@ -110,13 +174,7 @@ router.post("/players/:playerName/bookings/:bookingId",(req,res)=>{
     }
    
  
-    if(profileExist){
-      if(hasBookingId){
-        res.send("error")
-      }else{
-        res.send(palyers)
-      }
-}
+      
 
 
 
