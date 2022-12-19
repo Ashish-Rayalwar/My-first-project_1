@@ -1,8 +1,8 @@
 const { default: mongoose } = require("mongoose");
 
 
-const bookSchema = new mongoose.Schema({
-    name : {
+const authorSchema = new mongoose.Schema({
+    author_name : {
         type : String,
         require : true,
         trim : true
@@ -11,9 +11,9 @@ const bookSchema = new mongoose.Schema({
         type : Number,
         require:true
     },
-    price : Number,
-    ratings:String
+    age : Number,
+    address:String
 },{timestamps:true})
 
 
-module.exports = mongoose.model("NewBook",bookSchema)
+module.exports = mongoose.model("Author",authorSchema)
