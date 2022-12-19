@@ -4,6 +4,7 @@ const bookSchema = new mongoose.Schema({
         bookName : {
             type : String,
             require : true
+            
         },
         ISBN : {
             type : String,
@@ -23,11 +24,14 @@ const bookSchema = new mongoose.Schema({
             europeanPrice : String,
             japanPrice : String
         },
+        pages: Number,
         sales:{
             type:Number,
             default : 0
         },
-        completionDate : Date
+        completionDate : Date,
+        summary:mongoose.Schema.Types.Mixed,
+        isDeleted : Boolean
     },{timestamps:true})
 
 

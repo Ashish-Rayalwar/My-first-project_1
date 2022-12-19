@@ -42,15 +42,36 @@ const getParticularData = async function (req,res){
 
 const getByINR = async function(req,res){
     let inrPrice= req.body.price
-    inrPrice = inrPrice * 1
-    let data = await bookModel.find()
-    console.log(data);
-    let result = await data.find((ele)=>{
-        return ele.prices.indianPrice == inrPrice
-    })
-    console.log(result);      
-    res.send(result)
+  
+    let data = await bookModel.find({'prices.indianPrice':"500"})
+         
+    res.send(data)
 }
+
+
+const updateData = async function(req,res){
+        console.log(req.body);
+        let body = req.body;
+        let data = await bookModel.findOneAndUpdate(
+            {bookName:"Jungle Book"},
+            {$set:body},
+            {new:true, upsert:true}
+            
+        )
+        res.send(data)
+}
+const deleteBook = async function(req,res){
+        // console.log(req.body);
+        // let body = req.body;
+        let data = await bookModel.updateMany(
+            {bookName:"Jungle Book"},
+            {$set:{isDeleted:true}},
+            {new:true}
+            
+        )
+        res.send(data)
+}
+
 
 
 
@@ -60,3 +81,5 @@ module.exports.getBookNameAndAuthor=getBookNameAndAuthor
 module.exports.getBookDataByYear=getBookDataByYear
 module.exports.getParticularData=getParticularData
 module.exports.getByINR=getByINR
+module.exports.updateData=updateData
+module.exports.deleteBook=deleteBook

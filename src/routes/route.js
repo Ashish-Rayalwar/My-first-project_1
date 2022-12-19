@@ -23,6 +23,8 @@ router.get("/getBookData/Year/:year", bookController.getBookDataByYear) // Get b
 
 router.get("/getParticularBookData/name/:name", bookController.getParticularData ) // get by Name
 
-router.get("/getByINR/price/:price", bookController.getByINR )
+router.get("/getByINR", bookController.getByINR )
+router.post("/update", bookController.updateData )
+router.post("/delete",bookController.deleteBook)
 
 module.exports = router;
