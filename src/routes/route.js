@@ -5,6 +5,9 @@ const router = express.Router();
 
 const bookController = require("../controllers/bookController.js");
 const authorController = require("../controllers/authorController.js");
+const costomerController = require("../controllers/costomerController.js");
+const cardController = require("../controllers/cardController.js");
+
 
 
 
@@ -33,10 +36,21 @@ router.get("/test-me", function (req, res) {
 // router.post("/update", bookController.updateData);
 // router.post("/delete", bookController.createBookData);
 
-router.post("/createBook", bookController.createBookData)
-router.post("/createAuthor", authorController.createAuthor)
-router.get("/getBook", authorController.getBookByAuthor)
-router.post("/getUpdate", bookController.getUpdate)
-router.get("/findBooks", bookController.findBooks)
+// router.post("/createBook", bookController.createBookData)
+// router.post("/createAuthor", authorController.createAuthor)
+// router.get("/getBook", authorController.getBookByAuthor)
+// router.post("/getUpdate", bookController.getUpdate)
+// router.get("/findBooks", bookController.findBooks)
 
+router.post("/addCostomer", costomerController.addCostomerData)
+
+router.get("/getCostomer/:status", costomerController.getCostomerByStatus)
+
+router.get("/delete/:statusName",costomerController.deleteCostomer)
+
+
+
+router.post("/createCard", cardController.createCards)
+
+router.get("/getCardlist", cardController.getCardList)
 module.exports = router;

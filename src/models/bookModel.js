@@ -7,6 +7,10 @@ const bookSchema = new mongoose.Schema({
         require : true,
         trim : true
     },
+    serialNumber : {
+        type : String,
+        timestamps:true
+    },
     author_id :{
         type : Number,
         require:true
