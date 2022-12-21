@@ -1,6 +1,6 @@
-const moment = require("moment/moment");
+
 const { default: mongoose } = require("mongoose");
-const { v4: uuidv4 } = require('uuid');
+
 // const date = moment();
 // const birtDate = date.format("DD-MM-YYYY")
 const costomerSchema = new mongoose.Schema({
@@ -29,6 +29,8 @@ const costomerSchema = new mongoose.Schema({
         unique:true,
        
     },
+    isDeleted:{type:Boolean,
+    default:false},
     status : String
 })
 module.exports = mongoose.model("Costomer", costomerSchema)

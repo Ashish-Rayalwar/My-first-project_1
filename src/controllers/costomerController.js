@@ -20,12 +20,22 @@ const getCostomerByStatus = async function(req,res){
 
 const deleteCostomer = async function(req,res){
     let statusName = req.params.statusName
-    let deleteCostomer = await costomerModel.find({status : statusName }).deleteOne((err,docs)=>{
-        return docs.remove()
-    })
-    res.send(deleteCostomer)
+    let deleteCostomer = await costomerModel.updateMany(
+        {status : statusName},
+        {$set:{isDeleted : true}},
+        {new : true}
+    )
+    res.send({msg:"delete",result:deleteCostomer})
+}
+
+const findCostomer = async function(req,res){
+
+    let isDeleted = await costomerModel.find({isDeleted : false})
+    res.send(isDeleted)
+
 }
 
 module.exports.addCostomerData=addCostomerData
 module.exports.getCostomerByStatus=getCostomerByStatus
 module.exports.deleteCostomer=deleteCostomer
+module.exports.findCostomer=findCostomer
