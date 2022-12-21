@@ -2,28 +2,15 @@ const express = require("express");
 
 const router = express.Router();
 
-
-
-
-const costomerController = require("../controllers/costomerController.js");
-const cardController = require("../controllers/cardController.js");
+const newAuthorController = require("../controllers/newAuthorController.js")
 
 
 
 
 
 
-router.post("/addCostomer", costomerController.addCostomerData)
-
-router.get("/getCostomer/:status", costomerController.getCostomerByStatus)
-
-router.post("/delete/:statusName",costomerController.deleteCostomer)
-
-router.get("/getCostomer", costomerController.findCostomer)
+router.post("./createAuthor", newAuthorController.CreateAuthor)
 
 
 
-router.post("/createCard", cardController.createCards)
-
-router.get("/getCardlist", cardController.getCardList)
 module.exports = router;
