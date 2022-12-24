@@ -22,7 +22,7 @@ const checkValidationForUser =  async function(req,res,next){
     console.log(userIdDocument);
 
     if(!userIdDocument){
-        return res.send("productId is Invalid")
+        return res.send("UserId is Invalid")
     }
     next()
     
