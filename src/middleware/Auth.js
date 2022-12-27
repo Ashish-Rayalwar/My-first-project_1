@@ -46,7 +46,12 @@ const tokenVerify = function(req,res,next){
 
 
 const checkUserId = async function(req,res,next){
-    let userId = req.params.userId;
+  let userId = req.params.userId;
+  let token = req.headers["x-auth-token"];
+  let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+  let tokenUserId = decodedToken.userId
+  if(userId!=tokenUserId) return res.send({status:false,msg:"invalidUserID"})
+  
     let user =  await userModel.findById(userId);
   // //Return an error if no user with the given id exists in the db
   if (!user) {
