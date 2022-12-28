@@ -5,14 +5,19 @@ const userModel = require("../models/userModel");
   Read all the comments multiple times to understand why we are doing what we are doing in login api and getUserData api
 */
 const createUser = async function (req, res) {
-  
-  let userData = req.body;
-  let createUser = await userModel.create(userData);
-  
-  res.send({ user: createUser });
+  try {
+    let userData = req.body;
+    let createUser = await userModel.create(userData);
+
+    res.status(201).send({ user: createUser });
+  } catch (error) {
+    res.status(201).send({msg:error.message})
+    console.log("UserController 14", error.message);
+  }
 };
 
 const loginUser = async function (req, res) {
+ try {
   let userName = req.body.emailId;
   let password = req.body.password;
 
@@ -28,9 +33,7 @@ const loginUser = async function (req, res) {
   // Input 1 is the payload or the object containing data to be set in token
   // The decision about what data to put in token depends on the business requirement
   // Input 2 is the secret (This is basically a fixed value only set at the server. This value should be hard to guess)
-  // The same secret will be used to decode tokens 
-
-
+  // The same secret will be used to decode tokens
 
   let token = jwt.sign(
     {
@@ -41,14 +44,16 @@ const loginUser = async function (req, res) {
     "functionup-plutonium-very-very-secret-key"
   );
 
-
   res.setHeader("x-auth-token", token);
-  res.send({ status: true, token: token,message:"login success" });
+  res.status(302).send({ status: true, token: token, message: "login success" });
+ } catch (error) {
+  res.status(404).send({msg:error.message})
+  console.log("userController 50",error.message);
+ }
 };
 
 const getUserData = async function (req, res) {
   // let token = req.headers["x-auth-token"];
-  
 
   //If no token is present in the request header return error. This means the user is not logged in.
   // if (!token) return res.send({ status: false, msg: "token must be present" });
@@ -61,21 +66,25 @@ const getUserData = async function (req, res) {
   // Input 2 is the same secret with which the token was generated
   // Check the value of the decoded token yourself
 
-  // Decoding requires the secret again. 
+  // Decoding requires the secret again.
   // A token can only be decoded successfully if the same secret was used to create(sign) that token.
   // And because this token is only known to the server, it can be assumed that if a token is decoded at server then this token must have been issued by the same server in past.
-
 
   // let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
   // if (!decodedToken)
   //   return res.send({ status: false, msg: "token is invalid" });
 
+ try {
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
   if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
+    return res.status(200).send({ status: false, msg: "No such user exists" });
 
-  res.send({ status: true, data: userDetails });
+  res.status(302).send({ status: true, data: userDetails });
+ } catch (error) {
+  res.status(404).send({msg:error.message})
+  console.log("userController 86", error.message)
+ }
   // Note: Try to see what happens if we change the secret while decoding the token
 };
 
@@ -85,7 +94,8 @@ const updateUser = async function (req, res) {
   // Check if the token present is a valid token
   // Return a different error message in both these cases
 
-  let userId = req.params.userId;
+  try {
+    let userId = req.params.userId;
   // let user = await userModel.findById(userId);
   // // //Return an error if no user with the given id exists in the db
   // if (!user) {
@@ -94,20 +104,34 @@ const updateUser = async function (req, res) {
 
   let userData = req.body;
 
-  
- 
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId },userData,{new:true});
-  res.send({ status: true, data: updatedUser });
+  let updatedUser = await userModel.findOneAndUpdate(
+    { _id: userId },
+    userData,
+    { new: true }
+  );
+  res.status(202).send({ status: true, data: updatedUser });
+  } catch (error) {
+    res.status(204).send({msg:error.message})
+    console.log("userController update", error.message)
+  }
 };
 
-
-const deleteUser = async function(req,res){
-  let userId = req.params.userId;
-  let deleteUser = await userModel.findOneAndUpdate({ _id: userId },{ $set:{isDeleted:true}},{new:true});
-  res.send({ status: true, data: deleteUser });
-}
+const deleteUser = async function (req, res) {
+  try {
+    let userId = req.params.userId;
+  let deleteUser = await userModel.findOneAndUpdate(
+    { _id: userId },
+    { $set: { isDeleted: true } },
+    { new: true }
+  );
+  res.status(202).send({ status: true, data: deleteUser });
+  } catch (error) {
+    res.status(400).send({msg:error.message})
+    console.log("userController delete", error.message)
+  }
+};
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
-module.exports.deleteUser=deleteUser
+module.exports.deleteUser = deleteUser;

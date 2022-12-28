@@ -8,11 +8,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://Ashish:WeUTlaZDDXnrAyKM@test.ghtltbu.mongodb.net/test", {
+try {
+    mongoose.connect("mongodb+srv://Ashish:WeUTlaZDDXnrAyKM@test.ghtltbu.mongodb.net/test", {
     useNewUrlParser: true
+    
 })
-.then( () => console.log("MongoDb is connected"))
-.catch ( err => console.log(err) )
+console.log("database connected successfully");
+} catch (error) {
+
+    console.log(error.message," database is not connected");
+}
+// .then( () => console.log("MongoDb is connected"))
+// .catch ( err => console.log(err) )
 
 
 app.use('/', route)
